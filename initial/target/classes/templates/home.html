@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Home • Securing Web</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="navbar">
+    <div class="brand"><a th:href="@{/}">Securing Web Demo</a></div>
+    <div class="nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/hello}">Hello</a>
+        <a th:href="@{/admin}">Admin</a>
+        <span sec:authorize="isAuthenticated()" class="nav">
+            <span class="muted">Hi, <span sec:authentication="name"></span></span>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-outline">Sign out</button>
+            </form>
+        </span>
+        <span sec:authorize="!isAuthenticated()">
+            <a class="btn btn-primary" th:href="@{/login}">Sign in</a>
+        </span>
+    </div>
+</div>
+
+<div class="container">
+    <div class="hero">
+        <h1>Welcome!</h1>
+        <p>This sample shows Spring Security with roles and a database-backed user store.</p>
+        <div class="mt-16 flex gap-8">
+            <a class="btn btn-primary" th:href="@{/hello}">Go to Hello</a>
+            <a class="btn" th:href="@{/admin}">Admin area</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">Spring Boot • Spring Security • H2 • Thymeleaf</div>
+</body>
+</html>

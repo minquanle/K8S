@@ -1,0 +1,49 @@
+<!-- src/main/resources/templates/login.html -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Sign in • Securing Web</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div class="navbar">
+    <div class="brand"><a th:href="@{/}">Securing Web Demo</a></div>
+    <div class="nav">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/hello}">Hello</a>
+        <a th:href="@{/admin}">Admin</a>
+        <span sec:authorize="isAuthenticated()" class="nav">
+            <span class="muted">Hi, <span sec:authentication="name"></span></span>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-outline">Sign out</button>
+            </form>
+        </span>
+        <span sec:authorize="!isAuthenticated()">
+            <a class="btn btn-primary" th:href="@{/login}">Sign in</a>
+        </span>
+    </div>
+</div>
+<div class="container" style="max-width: 520px;">
+    <div class="card">
+        <h2>Sign in</h2>
+        <p class="muted">Use Single Sign-On with Auth0.</p>
+        <div th:if="${param.error}" class="alert" style="color:#ff6b6b;">
+            Login failed: <span th:text="${param.error}"></span><br/>
+            Check server logs for details. Common causes: wrong Auth0 client secret, redirect URI mismatch, audience mismatch, missing RBAC permissions.
+        </div>
+        <div class="flex column gap-12">
+            <!-- The audience is now added automatically by the backend configuration.
+                 This link can be simplified. -->
+            <a class="btn btn-primary" href="/oauth2/authorization/auth0">Login with Auth0</a>
+        </div>
+        <hr/>
+        <p class="muted" style="font-size: 12px;">If login fails verify Auth0 Domain, Client ID/Secret, Allowed Callback URL and (if used) audience.</p>
+    </div>
+</div>
+<div class="footer">Spring Boot • Spring Security • H2 • Thymeleaf</div>
+</body>
+</html>

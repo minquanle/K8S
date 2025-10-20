@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: securing-web
+  namespace: securing-web
+  labels:
+    app: securing-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: securing-web
+  template:
+    metadata:
+      labels:
+        app: securing-web
+    spec:
+      containers:
+        - name: app
+          # For Docker Desktop Kubernetes, a locally built image works with IfNotPresent
+          image: securing-web:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8085
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "noauth"
+          readinessProbe:
+            httpGet:
+              path: /hello
+              port: 8085
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /hello
+              port: 8085
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi

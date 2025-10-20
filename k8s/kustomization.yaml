@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: securing-web
+commonLabels:
+  app.kubernetes.io/name: securing-web
+  app.kubernetes.io/part-of: securing-web
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: securing-web
+

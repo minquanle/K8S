@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: securing-web
+data:
+  # Replace with your real Auth0 domain, e.g. "your-tenant.us.auth0.com"
+  AUTH0_DOMAIN: "your-tenant.eu.auth0.com"
+  # Optional. Set only if you use API audience + RBAC
+  AUTH0_AUDIENCE: ""
+
